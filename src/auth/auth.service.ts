@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthSignInDTO } from './dto/auth-signIn.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
@@ -13,14 +13,29 @@ export class AuthService {
     private jwtService: JwtService
   ){}
 
-  validate(createAuthDto: AuthSignInDTO) {
-    const user = this.userRepo.findOne({
+  async validate(createAuthDto: AuthSignInDTO) {
+    const user = await this.userRepo.findOne({
       where: {email: createAuthDto.email},
-      select: ['id', 'full_name', 'email']
+      select: ['id', 'full_name', 'email', "password_hash", "role"]
     })
 
     if(!user){
       throw new NotFoundException("El usuario no existe")
+    }
+
+    console.log(user.password_hash)
+    console.log(createAuthDto.password_hash)
+
+    if(user.password_hash !== createAuthDto.password_hash){
+      throw new UnauthorizedException("Contraseña Incorrecta")
+    }
+
+    const payload = {full_name: user.full_name, email: user.email, role: user.role}
+
+    const token = await this.jwtService.signAsync(payload)
+
+    return {
+      response: token
     }
 
   }
