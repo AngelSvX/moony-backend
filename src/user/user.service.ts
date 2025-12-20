@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import bcrypt from 'bcrypt'
 
 @Injectable()
 export class UserService {
@@ -22,7 +23,13 @@ export class UserService {
       throw new ConflictException("Email already exist")
     }
 
-    const user = this.userRepo.create(createUserDto)
+    const userHashed: CreateUserDto = createUserDto
+
+    const passwordHashed = await bcrypt.hash(createUserDto.password_hash, 10)
+
+    userHashed.password_hash = passwordHashed
+
+    const user = this.userRepo.create(userHashed)
     
     return this.userRepo.save(user)
   }

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -23,10 +24,9 @@ export class AuthService {
       throw new NotFoundException("El usuario no existe")
     }
 
-    console.log(user.password_hash)
-    console.log(createAuthDto.password_hash)
+    const isMatch = await bcrypt.compare(createAuthDto.password_hash, user.password_hash)
 
-    if(user.password_hash !== createAuthDto.password_hash){
+    if(!isMatch){
       throw new UnauthorizedException("Contraseña Incorrecta")
     }
 
