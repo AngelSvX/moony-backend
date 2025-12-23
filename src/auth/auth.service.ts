@@ -1,24 +1,27 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthSignInDTO } from './dto/auth-signIn.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
+import { DrizzleService } from 'src/db/drizzle.service';
+import { users } from 'src/db/schema';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private userRepo: Repository<User>,
-    private jwtService: JwtService
+    private drizzle: DrizzleService,
+    private jwtService: JwtService,
   ){}
 
   async validate(createAuthDto: AuthSignInDTO) {
-    const user = await this.userRepo.findOne({
-      where: {email: createAuthDto.email},
-      select: ['id', 'full_name', 'email', "password_hash", "role"]
-    })
+
+    const [user] = await this.drizzle.db.select({
+      id: users.id,
+      full_name: users.full_name,
+      email: users.email,
+      password_hash: users.password_hash,
+      role: users.role
+    }).from(users).where(eq(users.email, createAuthDto.email))
 
     if(!user){
       throw new NotFoundException("El usuario no existe")

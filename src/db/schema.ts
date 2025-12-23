@@ -7,21 +7,21 @@ export const users = mysqlTable('users', {
 
   email: varchar('email', { length: 255 }).notNull().unique(),
 
-  passwordHash: varchar('password_hash', { length: 255 }).notNull(),
+  password_hash: varchar('password_hash', { length: 255 }).notNull(),
 
-  fullName: varchar('full_name', { length: 255 }).notNull(),
+  full_name: varchar('full_name', { length: 255 }).notNull(),
 
-  avatarUrl: varchar('avatar_url', { length: 500 }),
+  avatar_url: varchar('avatar_url', { length: 500 }),
 
   role: varchar('role', { length: 50 }).notNull().default('developer'),
 
-  isActive: tinyint('is_active').default(1),
+  is_active: tinyint('is_active').default(1),
 
-  emailVerified: tinyint('email_verified').default(0),
+  email_verified: tinyint('email_verified').default(0),
 
-  createdAt: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`),
+  created_at: timestamp('created_at').default(sql`CURRENT_TIMESTAMP`),
 
-  updatedAt: timestamp('updated_at')
+  updated_at: timestamp('updated_at')
     .default(sql`CURRENT_TIMESTAMP`)
     .onUpdateNow(),
 });
