@@ -2,9 +2,9 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import bcrypt from 'bcrypt';
 import { DrizzleService } from 'src/db/drizzle.service';
 import { users } from 'src/db/schema';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { eq } from 'drizzle-orm';
+import { CreateUserDto } from './presentation/dto/create-user.dto';
+import { UpdateUserDto } from './presentation/dto/update-user.dto';
 
 @Injectable()
 export class UserService {
