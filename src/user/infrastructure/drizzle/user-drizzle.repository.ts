@@ -1,5 +1,5 @@
-import { Inject } from '@nestjs/common';
-import { eq, SelectedFields } from 'drizzle-orm';
+import { Inject, NotFoundException } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { DrizzleService } from 'src/db/drizzle.service';
 import { users } from 'src/db/schema';
 import { User } from 'src/user/domain/entities/user.entity';
@@ -84,6 +84,19 @@ export class UserDrizzleRepository implements UserRepository {
   }
 
   async update(user: User): Promise<void> {
+
+    if (user.id === null) {
+      throw new NotFoundException("ID was not found - Must be valid")
+    }
+
+    const result = await this.drizzle.db.update(users)
+      .set({
+        email: user.email,
+        full_name: user.full_name,
+        avatar_url: user.avatar_url,
+      }).where(eq(users.id, user.id))
+
+    console.log(result)
 
   }
 

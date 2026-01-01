@@ -7,6 +7,8 @@ import { UserController } from './presentation/user.controller';
 import { FindUserByIdUseCase } from './application/use-cases/find-user-by-id.user-case';
 import { FindAllUsersUseCase } from './application/use-cases/find-all-users.use-case';
 import { DeleteUserUseCase } from './application/use-cases/delete-user.use-case';
+import { FindAllUserByIdUseCase } from './application/use-cases/find-all-user-data-by-id-case';
+import { UpdateUserUseCase } from './application/use-cases/update-user.use-case';
 
 @Module({
   imports: [DrizzleModule],
@@ -19,7 +21,9 @@ import { DeleteUserUseCase } from './application/use-cases/delete-user.use-case'
   CreateUserUseCase,
   FindUserByIdUseCase,
   FindAllUsersUseCase,
-  DeleteUserUseCase
+  DeleteUserUseCase,
+  FindAllUserByIdUseCase,
+  UpdateUserUseCase
 ],
 })
 export class UserModule {}
