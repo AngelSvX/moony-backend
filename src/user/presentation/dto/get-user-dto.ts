@@ -11,15 +11,15 @@ export class GetUserDto {
     full_name: string;
 
     @IsString()
-    avatar_url: string;
+    avatar_url: string | null;
 
     @IsString()
     role: string;
 
     @IsNumber()
-    is_active: number
+    is_active: number | null;
 
     @IsNumber()
-    email_verified: number
+    email_verified: number | null;
 
 }

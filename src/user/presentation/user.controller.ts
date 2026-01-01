@@ -1,15 +1,19 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/commons/guards/auth.guard';
 import { CreateUserUseCase } from '../application/use-cases/create-user.use-case';
 import { FindUserByIdUseCase } from '../application/use-cases/find-user-by-id.user-case';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FindAllUsersUseCase } from '../application/use-cases/find-all-users.use-case';
+import { DeleteUserUseCase } from '../application/use-cases/delete-user.use-case';
 
 @Controller('user')
 @UseGuards(AuthGuard)
 export class UserController {
   constructor(
     private readonly createUser: CreateUserUseCase,
-    private readonly findUserById: FindUserByIdUseCase
+    private readonly findUserById: FindUserByIdUseCase,
+    private readonly findAllUsers: FindAllUsersUseCase,
+    private readonly deleteUser: DeleteUserUseCase
   ) { }
 
   @Post('/add')
@@ -25,6 +29,27 @@ export class UserController {
     return {
       success: true,
       message: "The user was added successfully"
+    }
+
+  }
+
+  @Get("/all")
+  async getAllUsers() {
+    const users = await this.findAllUsers.execute()
+    return {
+      success: true,
+      message: "Users found successfully",
+      users: users
+    }
+  }
+
+  @Delete(":id")
+  async deleteUserById(@Param('id') id: number){
+    await this.deleteUser.execute(id)
+
+    return{
+      success: true,
+      message: "User deleted successfully"
     }
 
   }

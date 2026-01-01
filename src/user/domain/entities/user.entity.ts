@@ -4,10 +4,10 @@ export class User {
         public email: string,
         public password_hash: string,
         public full_name: string,
-        public avatar_url: string,
+        public avatar_url: string | null,
         public role: string,
-        public is_active: number,
-        public email_verified: number
+        public is_active: number | null,
+        public email_verified: number | null,
     ){}
 
     activate(){

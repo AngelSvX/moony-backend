@@ -5,6 +5,8 @@ import { UserDrizzleRepository } from './infrastructure/drizzle/user-drizzle.rep
 import { CreateUserUseCase } from './application/use-cases/create-user.use-case';
 import { UserController } from './presentation/user.controller';
 import { FindUserByIdUseCase } from './application/use-cases/find-user-by-id.user-case';
+import { FindAllUsersUseCase } from './application/use-cases/find-all-users.use-case';
+import { DeleteUserUseCase } from './application/use-cases/delete-user.use-case';
 
 @Module({
   imports: [DrizzleModule],
@@ -15,7 +17,9 @@ import { FindUserByIdUseCase } from './application/use-cases/find-user-by-id.use
     useClass: UserDrizzleRepository
   },
   CreateUserUseCase,
-  FindUserByIdUseCase
+  FindUserByIdUseCase,
+  FindAllUsersUseCase,
+  DeleteUserUseCase
 ],
 })
 export class UserModule {}
