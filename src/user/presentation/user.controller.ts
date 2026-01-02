@@ -88,7 +88,5 @@ export class UserController {
       message: "User found succesfully",
       user: user
     }
-
   }
-
 }

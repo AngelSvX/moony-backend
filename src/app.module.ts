@@ -4,12 +4,13 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthModule } from './auth/auth.module';
 import { JwtMiddleware } from './commons/middlewares/jwt.middleware';
+import { UserAuthModule } from './user-auth/auth-user.module';
 
 @Module({
   imports: [
     UserModule,
+    UserAuthModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),
@@ -24,7 +25,6 @@ import { JwtMiddleware } from './commons/middlewares/jwt.middleware';
         }
       })
     }),
-    AuthModule
   ],
   controllers: [AppController],
   providers: [

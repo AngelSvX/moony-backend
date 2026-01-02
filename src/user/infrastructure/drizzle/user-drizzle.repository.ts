@@ -96,8 +96,6 @@ export class UserDrizzleRepository implements UserRepository {
         avatar_url: user.avatar_url,
       }).where(eq(users.id, user.id))
 
-    console.log(result)
-
   }
 
   async findAllById(id: number): Promise<User> {
